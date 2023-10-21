@@ -16,7 +16,7 @@ import matplotlib.ticker as ticker
 import dropbox
 from time import sleep
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file 
 
 app = Flask(__name__)
 @app.get("/average")
@@ -33,6 +33,7 @@ def get_average():
 	#yesterday = datetime.today() - timedelta(days = 1)
 	#enddate = datetime(yesterday.year, yesterday.month, yesterday.day)
 	filename = fastSum(parsedstart + timedelta(days = 2),parsedend)
+	print('The value of __name__ is ' + __name__)
 	return send_file(filename, mimetype='image/png')
 	
 def padzeros(n):
