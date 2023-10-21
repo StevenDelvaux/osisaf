@@ -13,7 +13,6 @@ from math import sqrt, sin, cos, pi, floor, isnan, nan, atan, atan2, ceil
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
 from PIL import Image, ImageGrab, ImageDraw, ImageFont
-import cv2
 import matplotlib.ticker as ticker
 import dropbox
 from time import sleep
