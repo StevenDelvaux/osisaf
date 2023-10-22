@@ -18,6 +18,7 @@ from time import sleep
 
 from flask import Flask, request, jsonify, send_file 
 
+monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 app = Flask(__name__)
 @app.route("/")
 def hello():
@@ -100,7 +101,7 @@ def fastSum(start,end):
 	
 	im = plotMatrixbis(dx/days, dy/days, 'osisaf-test.png')
 	#downloadImages(fromDate,date)
-	title = s + "-" + e
+	title = padzeros(startsafe.day) + ' ' + monthNames[startsafe.month-1] + " " + str(startsafe.year) + ' to ' + padzeros(endsafe.day) + ' ' + monthNames[endsafe.month-1] + " " + str(endsafe.year)
 	filename = 'osisaf-average-' + title + '.png'	
 	crop(im, title, filename)
 	return filename
