@@ -21,10 +21,7 @@ from flask import Flask, request, jsonify, send_file
 app = Flask(__name__)
 @app.route("/")
 def hello():
-	return "Hello"
-@app.get("/test")
-def get_test():
-	return "Test"
+	return "Generate an average sea ice drift map by running a query like this: https://osisaf.onrender.com/average?start=2023-10-12&end=2023-10-16"
 @app.get("/average")
 def get_average():
 #@app.route("/")
@@ -33,13 +30,16 @@ def get_average():
 	start=request.args.get('start')
 	end=request.args.get('end')
 	if start == None:
-		return "Please insert start date (yyyy-mm-dd)", 400
+		return "Please insert start date (start=YYYY-MM-DD)", 400
 	if end == None:
-		return "Please insert end date (yyyy-mm-dd)", 400
+		return "Please insert end date (end=YYYY-MM-DD)", 400
 	print(start)
 	print(end)
-	parsedstart = datetime.strptime(start,'%Y-%m-%d')
-	parsedend = datetime.strptime(end,'%Y-%m-%d')
+	try:
+		parsedstart = datetime.strptime(start,'%Y-%m-%d')
+		parsedend = datetime.strptime(end,'%Y-%m-%d')
+	except ValueError:
+		return "Invalid start of end date. They need to have the format YYYY-MM-DD"
 	#if parsedstart == None:
 	#	return "Start date should have the format yyyy-mm-dd", 400
 	#if parsedend == None:
