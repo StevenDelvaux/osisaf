@@ -229,7 +229,9 @@ def crop(im, title, saveFileName):
 		for col in range(width):		
 			pixelmatrix[col, row] = (255,255,255)
 	printimtext = ImageDraw.Draw(im1)
-	fontsize=30 
+	fontsize=30
+	#font = ImageFont.load_default()
+    #font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/arialbd.ttf", fontsize)
 	font = ImageFont.truetype("arialbd.ttf", fontsize)
 	printimtext.text((5,1), title, (0, 0, 0), font=font)
 
