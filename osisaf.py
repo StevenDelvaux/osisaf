@@ -19,10 +19,16 @@ from time import sleep
 from flask import Flask, request, jsonify, send_file 
 
 app = Flask(__name__)
-#@app.get("/average")
-#def get_average():
 @app.route("/")
-def average():
+def hello():
+	return "Hello"
+@app.get("/test")
+def get_test():
+	return "Test"
+@app.get("/average")
+def get_average():
+#@app.route("/")
+#def average():
 	print('inside avg')
 	start=request.args.get('start')
 	end=request.args.get('end')
