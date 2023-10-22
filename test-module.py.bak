@@ -2,7 +2,7 @@ from waitress import serve
 import osisaf
 
 def sum(a,b):
-    c = osisaf.app,
+    c = app1.app,
     return a+b
 
 sum(1,2)

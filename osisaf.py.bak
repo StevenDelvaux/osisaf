@@ -27,9 +27,9 @@ def average():
 	start=request.args.get('start')
 	end=request.args.get('end')
 	if start == None:
-		return "Please insert start date (yyyy-mm-dd)", 400
+		return "Please insert start date", 400
 	if end == None:
-		return "Please insert end date (yyyy-mm-dd)", 400
+		return "Please insert end date", 400
 	print(start)
 	print(end)
 	parsedstart = datetime.strptime(start,'%Y-%m-%d')
