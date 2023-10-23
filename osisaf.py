@@ -235,5 +235,11 @@ def crop(im, title, saveFileName):
     #font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/arialbd.ttf", fontsize)
 	font = ImageFont.truetype("arialbd.ttf", fontsize)
 	printimtext.text((5,1), title, (0, 0, 0), font=font)
+	
+	subtitle1 = "Graphic created by Steven D using"
+	subtitle2 = "OSISAF numeric data & background image"
+	subtitlefont = ImageFont.truetype("arial.ttf", 10)
+	printimtext.text((480,5), subtitle1, (0, 0, 0), font=subtitlefont)
+	printimtext.text((480,20), subtitle2, (0, 0, 0), font=subtitlefont)
 
 	im1.save(saveFileName)
