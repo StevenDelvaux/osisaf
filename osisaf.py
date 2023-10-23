@@ -113,11 +113,13 @@ def fastSum(start,end):
 	np.savetxt("dx_average_" + s + "-" + e +".csv", dx, delimiter=",")
 	np.savetxt("dy_average_" + s + "-" + e +".csv", dy, delimiter=",")
 	
-	im = plotMatrixbis(dx/days, dy/days, 'osisaf-test.png')
+	oldimage = end < datetime(2021,3,12)
+	imagescale = 1.25 if oldimage else 1
+	im = plotMatrixbis(dx/days, dy/days, imagescale, 'osisaf-test.png')
 	#downloadImages(fromDate,date)
 	title = padzeros(startsafe.day) + ' ' + monthNames[startsafe.month-1] + " " + str(startsafe.year) + ' to ' + padzeros(endsafe.day) + ' ' + monthNames[endsafe.month-1] + " " + str(endsafe.year)
 	filename = 'osisaf-average-' + title + '.png'	
-	crop(im, title, filename)
+	crop(im, title, imagescale, filename)
 	return filename
 	
 def getImageFileName(date):
@@ -180,7 +182,7 @@ def getSumBis(fromDate, step):
 	dyy = addbis(dyy,dy)
 	return (dxx,dyy)
 	
-def plotMatrixbis(dx,dy,saveFileName):
+def plotMatrixbis(dx,dy,scale,saveFileName):
 	filename = 'osisaf-average.png'
 	im = Image.open(filename)
 	im = im.convert("RGBA")	
@@ -188,22 +190,20 @@ def plotMatrixbis(dx,dy,saveFileName):
 	pixelmatrix = im.load()
 	na = np.array(im)
 	print(width, height)
-	
 	for row in range(177):
 		for col in range(119):
 			dxx = dx[row,col]
 			dyy = dy[row,col]
 			if not isValid(dxx) or not isValid(dyy):
 				continue
-			ii = int(-209+11.5*col)
-			jj = int(-602+11.5*row)
+			ii = int(-209*scale+11.5*scale*col)
+			jj = int(-602*scale+11.5*scale*row)
 			if ii >=0 and jj >= 0 and ii < width and jj < height:
 				pixelmatrix[ii, jj] = (0,0,0)
-				scale = 1.0
 				ptA = (ii,jj)
-				ptB = (ii+int(dxx/scale), jj-int(dyy/scale))
+				ptB = (ii+int(dxx*scale), jj-int(dyy*scale))
 				#na = cv2.arrowedLine(na, ptA, ptB, (0,0,0), 1)
-				arrowedLine(im,ptA,ptB)
+				arrowedLine(im,ptA,ptB,scale)
 	#im = Image.fromarray(na)
 	im.save(saveFileName)
 	return im
@@ -215,7 +215,7 @@ def isValid(cell):
 		return True
 	return False
 
-def arrowedLine(im, ptA, ptB, width=1, color=(0,0,0)):
+def arrowedLine(im, ptA, ptB, scale, width=1, color=(0,0,0)):
 	"""Draw line from ptA to ptB with arrowhead at ptB"""
 	# Get drawing context
 	draw = ImageDraw.Draw(im)
@@ -259,17 +259,20 @@ def arrowedLine(im, ptA, ptB, width=1, color=(0,0,0)):
 	draw.polygon([vtx0, vtx1, ptB], fill=color)
 	return im
 
-def crop(im, title, saveFileName):	
-	im1 = im.crop((68,30,748,710)) # (318,242,734,658) #(280,220,744,684) #(70,30,744,684)
+def crop(im, title, scale, saveFileName):	
+	if scale == 1:
+		im1 = im.crop((68,30,748,710)) # (318,242,734,658) #(280,220,744,684) #(70,30,744,684)
+	elif scale == 1.25:
+		im1 = im.crop((76,24,926,874))
 	width, height = im1.size	
 	pixelmatrix = im1.load()
 	print(saveFileName)
 
-	for row in range(40):
+	for row in range(int(40*scale)):
 		for col in range(width):		
 			pixelmatrix[col, row] = (255,255,255)
 	printimtext = ImageDraw.Draw(im1)
-	fontsize=30
+	fontsize=int(30*scale)
 	#font = ImageFont.load_default()
     #font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/arialbd.ttf", fontsize)
 	font = ImageFont.truetype("arialbd.ttf", fontsize)
@@ -277,8 +280,8 @@ def crop(im, title, saveFileName):
 	
 	subtitle1 = "Graphic created by Steven D using"
 	subtitle2 = "OSISAF numeric data & background image"
-	subtitlefont = ImageFont.truetype("arial.ttf", 10)
-	printimtext.text((480,5), subtitle1, (0, 0, 0), font=subtitlefont)
-	printimtext.text((480,20), subtitle2, (0, 0, 0), font=subtitlefont)
+	subtitlefont = ImageFont.truetype("arial.ttf", int(10*scale))
+	printimtext.text((int(480*scale),int(5*scale)), subtitle1, (0, 0, 0), font=subtitlefont)
+	printimtext.text((int(480*scale),int(20*scale)), subtitle2, (0, 0, 0), font=subtitlefont)
 
 	im1.save(saveFileName)
