@@ -113,7 +113,7 @@ def fastSum(start,end):
 	np.savetxt("dx_average_" + s + "-" + e +".csv", dx, delimiter=",")
 	np.savetxt("dy_average_" + s + "-" + e +".csv", dy, delimiter=",")
 	
-	oldimage = end < datetime(2021,3,12)
+	oldimage = endsafe < datetime(2021,3,12)
 	imagescale = 1.25 if oldimage else 1
 	im = plotMatrixbis(dx/days, dy/days, imagescale, 'osisaf-test.png')
 	#downloadImages(fromDate,date)
