@@ -19,6 +19,8 @@ from time import sleep
 from flask import Flask, request, jsonify, send_file 
 
 monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+imageFolder = 'https://osisaf.met.no/quicklooks/prod/ice/'
+
 app = Flask(__name__)
 @app.route("/")
 def hello():
@@ -47,11 +49,23 @@ def get_average():
 	#	return "End date should have the format yyyy-mm-dd", 400
 	if(parsedend-parsedstart).days < 2:
 		return "End date should be larger than start date", 400
+	prepareImage(downloadImage(parsedend))		
 	#yesterday = datetime.today() - timedelta(days = 1)
 	#enddate = datetime(yesterday.year, yesterday.month, yesterday.day)
 	filename = fastSum(parsedstart + timedelta(days = 2),parsedend)
 	print('The value of __name__ is ' + __name__)
 	return send_file(filename, mimetype='image/png')
+	
+def downloadImage(date):
+	previousDate = date - timedelta(days = 2)
+	filename = getImageFileName(date)
+	fullPath = imageFolder + str(previousDate.year) + '/' + padzeros(previousDate.month) + '/' + filename
+	localpath = "background-image.png"
+	print('downloading image ', fullPath)
+	with closing(urllib.request.urlopen(fullPath)) as r:
+		with open(localpath, 'wb') as f:
+			shutil.copyfileobj(r, f)
+	return localpath
 	
 def padzeros(n):
 	"""
@@ -105,6 +119,31 @@ def fastSum(start,end):
 	filename = 'osisaf-average-' + title + '.png'	
 	crop(im, title, filename)
 	return filename
+	
+def getImageFileName(date):
+	previousDate = date - timedelta(days = 2)
+	return 'ice_drift_nh_polstere-625_multi-oi_' + str(previousDate.year) + padzeros(previousDate.month) + padzeros(previousDate.day) + '1200-' + str(date.year) + padzeros(date.month) + padzeros(date.day) + '1200_combo.png'
+	
+def prepareImage(filename):
+	im = Image.open(filename)
+	im = im.convert("RGBA")
+	width, height = im.size
+	print('image size', width, height)
+	pixelmatrix = im.load()
+	for row in range(height):
+		for col in range(width):
+			pixel = pixelmatrix[col, row]
+			if not iswater(pixel) and not ismidgrey(pixel):					
+				pixelmatrix[col, row] = (255,255,255)
+			if ismidgrey(pixel) and not ismidgrey(pixelmatrix[max(col-1,0), row]) and not ismidgrey(pixelmatrix[min(col+1,width-1), row]) and not ismidgrey(pixelmatrix[col, max(row-1,0)]) and not ismidgrey(pixelmatrix[col, min(row+1,height-1)]):
+				pixelmatrix[col, row] = (255,255,255)
+	im.save('osisaf-average.png')
+	
+def iswater(pixel):
+	return pixel[0] == 4 and pixel[1] == 97 and pixel[2] == 152
+
+def ismidgrey(pixel):
+	return pixel[0] == 128 and pixel[1] == 128 and pixel[2] == 128
 	
 def loadSimpleFiles(start, end):
 	filenamex,filenamey = getSimpleFilename(start,end)
