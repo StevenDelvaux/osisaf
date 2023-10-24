@@ -109,7 +109,7 @@ def fastSum(start,end):
 	factor = 1
 	dx = None
 	dy = None
-	while(daysa < daysb):
+	while(daysa <= daysb):
 		factor *= 2
 		if(daysa%factor >= factor/2):
 			# add start
@@ -122,7 +122,7 @@ def fastSum(start,end):
 				dy = addbis(dyy,dy)
 			start = start + timedelta(days = factor/2)
 			daysa += factor/2
-		if(daysb%factor < factor/2 and daysa < daysb):
+		if(daysb%factor < factor/2 and daysa <= daysb):
 			# add end
 			dxx,dyy = loadSimpleFiles(end - timedelta(days = factor/2 -1), end)
 			if dx is None:
