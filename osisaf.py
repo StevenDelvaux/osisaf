@@ -49,10 +49,16 @@ def get_average():
 	#	return "End date should have the format yyyy-mm-dd", 400
 	if(parsedend-parsedstart).days < 2:
 		return "End date should be larger than start date", 400
-	prepareImage(downloadImage(parsedend))		
+	#prepareImage(downloadImage(parsedend))		TODO!!!!
 	#yesterday = datetime.today() - timedelta(days = 1)
 	#enddate = datetime(yesterday.year, yesterday.month, yesterday.day)
-	filename = fastSum(parsedstart + timedelta(days = 2),parsedend)
+	try:
+	     filename = fastSum(parsedstart + timedelta(days = 2),parsedend)
+	except OSError as e:
+		print(type(e))    # the exception type
+		print(e.args)     # arguments stored in .args
+		print(e) 
+		return("error: " + str(e).replace("data/fast/", "").replace("dx_", ""))
 	print('The value of __name__ is ' + __name__)
 	return send_file(filename, mimetype='image/png')
 	

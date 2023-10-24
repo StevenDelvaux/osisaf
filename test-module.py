@@ -1,8 +1,0 @@
-from waitress import serve
-import osisaf
-
-def sum(a,b):
-    c = osisaf.app,
-    return a+b
-
-sum(1,2)

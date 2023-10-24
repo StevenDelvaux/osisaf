@@ -1,3 +1,0 @@
-from waitress import serve
-import osisaf-api
-serve(app1.app, host='0.0.0.0', port=8080)
