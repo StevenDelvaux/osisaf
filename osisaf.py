@@ -47,8 +47,27 @@ def get_average():
 	#	return "Start date should have the format yyyy-mm-dd", 400
 	#if parsedend == None:
 	#	return "End date should have the format yyyy-mm-dd", 400
+	if(parsedstart < datetime(2019,6,1)):
+		return "Start date cannot be earlier than 2019-06-01", 400
 	if(parsedend-parsedstart).days < 2:
-		return "End date should be larger than start date", 400
+		return "End date should be at least 2 days later than start date", 400
+	yesterday = datetime.today() - timedelta(days = 1)
+	yesterday = datetime(yesterday.year, yesterday.month, yesterday.day)		
+		
+	if(parsedend > yesterday):
+		return "End date cannot be later than " + dateString(yesterday, "-"), 400
+	found = False
+	counter = 0
+	while(not found and parsedend > yesterday - timedelta(days = 3)):
+		try:
+			dxx,dyy = loadSimpleFiles(parsedend, parsedend)
+			found = True			
+		except OSError as e:
+			counter += 1
+			parsedend = parsedend - timedelta(days = 1);
+	if(parsedend-parsedstart).days < 2:
+		return "Latest available date is " + dateString(parsedend, "-"), 400
+		
 	prepareImage(downloadImage(parsedend))
 	#yesterday = datetime.today() - timedelta(days = 1)
 	#enddate = datetime(yesterday.year, yesterday.month, yesterday.day)
@@ -167,8 +186,8 @@ def getSimpleFilename(start,end):
 		return "data/fast/dx_" + dateString(start) + ".csv", "data/fast/dy_" + dateString(start) + ".csv"
 	return "data/fast/dx_" + dateString(start) + "-" + dateString(end) + ".csv", "data/fast/dy_" + dateString(start) + "-" + dateString(end) + ".csv"
 
-def dateString(date):
-	return str(date.year) + padzeros(date.month) + padzeros(date.day)
+def dateString(date, separator = ""):
+	return str(date.year) + separator + padzeros(date.month) + separator + padzeros(date.day)
 
 def addbis(dxx,dx):
 	for row in range(177):
