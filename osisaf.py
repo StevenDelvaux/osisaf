@@ -49,7 +49,7 @@ def get_average():
 	#	return "End date should have the format yyyy-mm-dd", 400
 	if(parsedend-parsedstart).days < 2:
 		return "End date should be larger than start date", 400
-	#prepareImage(downloadImage(parsedend))		TODO!!!!
+	prepareImage(downloadImage(parsedend))
 	#yesterday = datetime.today() - timedelta(days = 1)
 	#enddate = datetime(yesterday.year, yesterday.month, yesterday.day)
 	try:
