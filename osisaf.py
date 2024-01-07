@@ -135,15 +135,15 @@ def fastSum(start,end):
 			daysb -= factor/2
 	s = dateString(startsafe)
 	e = dateString(endsafe)
-	np.savetxt("dx_average_" + s + "-" + e +".csv", dx, delimiter=",")
-	np.savetxt("dy_average_" + s + "-" + e +".csv", dy, delimiter=",")
+	#np.savetxt("dx_average_" + s + "-" + e +".csv", dx, delimiter=",")
+	#np.savetxt("dy_average_" + s + "-" + e +".csv", dy, delimiter=",")
 	
 	oldimage = endsafe < datetime(2021,3,12)
 	imagescale = 1.25 if oldimage else 1
 	im = plotMatrixbis(dx/days, dy/days, imagescale, 'osisaf-test.png')
 	#downloadImages(fromDate,date)
 	title = padzeros(startsafe.day) + ' ' + monthNames[startsafe.month-1] + " " + str(startsafe.year) + ' to ' + padzeros(endsafe.day) + ' ' + monthNames[endsafe.month-1] + " " + str(endsafe.year)
-	filename = 'osisaf-average-' + title + '.png'	
+	filename = 'osisaf-average-image' + '.png' # filename = 'osisaf-average-' + title + '.png'	
 	crop(im, title, imagescale, filename)
 	return filename
 	
