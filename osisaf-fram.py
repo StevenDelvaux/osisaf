@@ -24,7 +24,7 @@ framDefinition = 'ateam' #'ateam' '80n' 'flat' 'fjl'
 monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 ftpFolder = 'ftp://osisaf.met.no/archive/ice/drift_lr/merged/'
 imageFolder = 'https://osisaf.met.no/quicklooks/prod/ice/'
-putOnDropbox = False
+putOnDropbox = True
 
 def loadFile(filename):
 	#print('loading file', filename)
