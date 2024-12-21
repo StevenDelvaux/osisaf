@@ -3,7 +3,7 @@ name: Run Python Script Daily
 on:
   schedule:
     # Run at 5:00 a.m. UTC every day
-    - cron: '35 19 * * *'
+    - cron: '55 19 * * *'
 
 jobs:
   run-script:
@@ -31,6 +31,12 @@ jobs:
 
     - name: Run Python script
       run: python osisaf-fram.py
+
+    - name: Set up Git
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+
     - name: Commit changes
       run: |
         git add .
