@@ -149,11 +149,9 @@ def downloadNewFiles():
 	print(framData)
 	return framData, framDataFjl
 
-def appendToCsvFile(framData,fjl):
+def appendToCsvFile(framData, filename):
 	if len(framData) == 0:
 		return
-	name = "osisaf-fram-" + ("fjl-" if fjl else "") + "daily.csv"
-	downloadFromDropbox([name]) # todo: always do this?
 	with open(name, "a") as myfile:
 		myfile.write( ',' + ','.join(framData))
 
@@ -599,8 +597,12 @@ if auto:
 		prepareImageAntarctic(filenameImageAntarctic, 'osisaf-antarctic-average.png')
 		os.remove(filenameImageAntarctic)
 		
-	appendToCsvFile(framData, False)
-	appendToCsvFile(framDataFjl, True)
+	if framExport:
+		framFilename = 'osisaf-fram-daily.csv'
+		framFjlFilename = 'osisaf-fram-fjl-daily.csv'
+		downloadFromDropbox([framFilename, framFjlFilename])
+		appendToCsvFile(framData, framFilename)
+		appendToCsvFile(framDataFjl, framFjlFilename)
 	print('inside precalculate', yesterday, latestDate)
 	refdate = datetime(2017,6,1)
 	date = latestDate + timedelta(days = 1) #
