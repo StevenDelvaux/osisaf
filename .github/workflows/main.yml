@@ -3,7 +3,7 @@ name: Run Python Script Daily
 on:
   schedule:
     # Run at 5:00 a.m. UTC every day
-    - cron: '35 20 * * *'
+    - cron: '55 20 * * *'
 
 jobs:
   run-script:
@@ -38,7 +38,7 @@ jobs:
       run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "actions@github.com"
-        git remote set-url --push origin https://StevenDelvaux:$GITHUB_TOKEN@github.com/osisaf.git
+        git remote set-url --push origin https://StevenDelvaux:$GITHUB_TOKEN@github.com/StevenDelvaux/osisaf
         git add .
         git commit -m "Automated commit: $(date -u +'%Y-%m-%d %H:%M:%S')"
         git push
