@@ -1,0 +1,43 @@
+name: Run Python Script Daily
+
+on:
+  schedule:
+    # Run at 5:00 a.m. UTC every day
+    - cron: '20 18 * * *'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    env:
+      DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
+      APP_KEY: ${{ secrets.APP_KEY }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OAUTH2_REFRESH_TOKEN: ${{ secrets.OAUTH2_REFRESH_TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8.12'  # Specify your Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install pip==23.2.1
+        if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+
+    - name: Run Python script
+      run: python osisaf-fram.py
+    - name: Commit changes
+      run: |
+        git add .
+        git commit -m "Automated commit: $(date -u +'%Y-%m-%d %H:%M:%S')"
+
+    - name: Push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git push
