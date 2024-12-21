@@ -118,7 +118,7 @@ def download(date, north=True):
     """
 	filename = getFileName(date, north)
 	fullFtpPath = ftpFolder + str(date.year) + '/' + padzeros(date.month) + '/' + filename
-	localfolder = './data/' + ('lr' if north else 'antarctic')
+	localfolder = './data/lr' 
 	localpath = localfolder + '/' + filename
 	print('downloading file ', fullFtpPath)
 	if not os.path.isdir(localfolder):
@@ -306,7 +306,7 @@ def addbis(dxx,dx, north = True):
 
 def loadFileForDate(date, north=True):
 	filename = getFileName(date, north)
-	localpath = './data/' + ('lr' if north else 'antarctic') + '/' + filename
+	localpath = './data/lr/' + filename
 	dxx,dyy = loadFile(localpath)
 	return (dxx,dyy)
 
@@ -314,14 +314,14 @@ def getSum(fromDate, toDate, north=True):
 	date = fromDate
 	print(date)
 	filename = getFileName(date, north)
-	localpath = './data/' + ('lr' if north else 'antarctic') + '/' + filename
+	localpath = './data/lr/' + filename
 	dxx,dyy = loadFile(localpath)
 	date = date + timedelta(days = 1)
 	
 	while date <= toDate:
 		print(date)
 		filename = getFileName(date, north)
-		localpath = './data/' + ('lr' if north else 'antarctic') + '/' + filename
+		localpath = './data/lr/' + filename
 		dx,dy = loadFile(localpath)
 		dxx = add(dxx, dx, north)
 		dyy = add(dyy, dy, north)
