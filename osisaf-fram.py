@@ -420,7 +420,7 @@ def fastSum(start, end, filename):
 	daysa = (start-refdate).days
 	daysb = (end-refdate).days
 	days = daysb - daysa + 1
-	startsafe = start
+	startsafe = start - timedelta(days = 2)
 	endsafe = end
 	print(str(daysa) + ", " + str(daysb))
 	factor = 1
