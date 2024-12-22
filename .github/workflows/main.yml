@@ -3,7 +3,7 @@ name: Run Python Script Daily
 on:
   schedule:
     # Run at 6:00 a.m. UTC every day
-    - cron: '15 9 * * *'
+    - cron: '0 6 * * *'
 permissions:
   contents: write
 
