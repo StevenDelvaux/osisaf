@@ -152,7 +152,7 @@ def downloadNewFiles():
 def appendToCsvFile(framData, filename):
 	if len(framData) == 0:
 		return
-	with open(name, "a") as myfile:
+	with open(filename, "a") as myfile:
 		myfile.write( ',' + ','.join(framData))
 
 def prepareImage(filename, filenameToSave):
