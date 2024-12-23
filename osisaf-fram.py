@@ -87,8 +87,8 @@ def dateString(date):
 	return str(date.year) + padzeros(date.month) + padzeros(date.day)
 
 def getLatestFileInFolder():
-	listOfFiles = glob.glob('./data/fast/*.csv')
-	return max(listOfFiles, key=os.path.getctime)
+	listOfFiles = glob.glob('./data/antarctic/*.csv')
+	return max(listOfFiles)
 
 def getLatestDateInFolder():
 	latestFile = getLatestFileInFolder()
