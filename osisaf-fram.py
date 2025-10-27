@@ -14,6 +14,7 @@ import matplotlib.ticker as ticker
 import dropbox
 from time import sleep
 from decouple import config
+import csv
 
 auto = True
 updateImage = True
@@ -95,7 +96,7 @@ def getLatestDateInFolder():
 	print('latest file',  latestFile)
 	latestDate = datetime(int(latestFile[-12:-8]), int(latestFile[-8:-6]), int(latestFile[-6:-4]))	
 	print('here latest', latestDate.day, latestDate.month, latestDate.year)
-	#return datetime(2024,10,12) # todo temp
+	return datetime(2025,10,26) # todo temp
 	return latestDate
 	
 def floatToString(n):
@@ -360,20 +361,22 @@ def plotFramGraph(inputFileName, outputFileName, title, ymax):
 	memoryData = plotCumSum(ax, lines, dates, -5, '2020/21', (0.58,0.54,0.33), memoryData)
 	memoryData = plotCumSum(ax, lines, dates, -4, '2021/22', (0.4,0,0.2), memoryData)
 	memoryData = plotCumSum(ax, lines, dates, -3, '2022/23', (0.0,0.69,0.94), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -2, '2023/24', (0,0.44,0.75), memoryData)
-	# numberOfDays = len(memoryData)
-	# print(numberOfDays)
-	# cum23 = np.cumsum(np.array(memoryData, dtype='float32'))/1000000.0
-	# padded23 = np.pad(cum23, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))	
-	# ax.plot(dates, padded23, label="2024/25", color=(1.0,0,0), linewidth=3);
+	memoryData = plotCumSum(ax, lines, dates, -2, '2023/24', (0.3,0.44,0.4), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -1, '2024/25', (0,0.44,0.75), memoryData)
 	
-	line = lines[-1].split(",")
-	line23 = np.append(memoryData, (np.array([i.lstrip() for i in np.array(line[1:])])))
-	numberOfDays = len(line23)
+	numberOfDays = len(memoryData)
 	print(numberOfDays)
-	cum23 = np.cumsum(line23.astype(float))/1000000.0
-	padded23 = np.pad(cum23, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))
-	ax.plot(dates, padded23, label="2024/25", color=(1.0,0,0), linewidth=3);
+	cum25 = np.cumsum(np.array(memoryData, dtype='float32'))/1000000.0
+	padded25 = np.pad(cum25, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))	
+	ax.plot(dates, padded25, label="2025/26", color=(1.0,0,0), linewidth=3);
+	
+	#line = lines[-1].split(",")
+	#line23 = np.append(memoryData, (np.array([i.lstrip() for i in np.array(line[1:])])))
+	#numberOfDays = len(line23)
+	#print(numberOfDays)
+	#cum23 = np.cumsum(line23.astype(float))/1000000.0
+	#padded23 = np.pad(cum23, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))
+	#ax.plot(dates, padded23, label="2024/25", color=(1.0,0,0), linewidth=3);
 	
 	
 	ax.set_ylabel("10$^6$ km$^2$")
@@ -591,10 +594,14 @@ def downloadFromDropbox(filenames):
 			f.write(res.content)
 		print("[DOWNLOADED] {}".format(dropbox_path))
 	
+antarctic = False # todo temp
 if auto:
 	plotdays = [10,30]
 	latestDate = getLatestDateInFolder()
-	framData,framDataFjl = downloadNewFiles()
+	framData,framDataFjl = downloadNewFiles()	
+	#np.savetxt("fram25bis.csv", framData, delimiter=",", fmt="%.3f")
+	#np.savetxt("framfjl25bis.csv", framDataFjl, delimiter=",", fmt="%.3f")
+	
 	tomorrow = datetime.today() + timedelta(days = 1)
 	yesterday = datetime.today() - timedelta(days = 1)
 	if updateImage:	
@@ -602,9 +609,10 @@ if auto:
 		prepareImage(filenameImage, 'osisaf-average.png')
 		os.remove(filenameImage)
 		
-		filenameImageAntarctic = downloadImage(yesterday, False)
-		prepareImageAntarctic(filenameImageAntarctic, 'osisaf-antarctic-average.png')
-		os.remove(filenameImageAntarctic)
+		if antarctic:
+			filenameImageAntarctic = downloadImage(yesterday, False)
+			prepareImageAntarctic(filenameImageAntarctic, 'osisaf-antarctic-average.png')
+			os.remove(filenameImageAntarctic)
 		
 	if framExport:
 		framFilename = 'osisaf-fram-daily.csv'
@@ -638,11 +646,12 @@ if auto:
 			uploadToDropbox([filename])
 		os.remove(filename)
 		
-		filenameAntarctic = 'osisaf-antarctic-average-last-' + str(delta) + '-days.png'
-		sumAntarctic(yesterday - timedelta(days = delta - 2), yesterday, filenameAntarctic)
-		if putOnDropbox:
-			uploadToDropbox([filenameAntarctic])
-		os.remove(filenameAntarctic)
+		if antarctic:
+			filenameAntarctic = 'osisaf-antarctic-average-last-' + str(delta) + '-days.png'
+			sumAntarctic(yesterday - timedelta(days = delta - 2), yesterday, filenameAntarctic)
+			if putOnDropbox:
+				uploadToDropbox([filenameAntarctic])
+			os.remove(filenameAntarctic)
 
 	if framExport:
 		updateFramGraphs('fjl')
