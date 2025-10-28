@@ -96,7 +96,7 @@ def getLatestDateInFolder():
 	print('latest file',  latestFile)
 	latestDate = datetime(int(latestFile[-12:-8]), int(latestFile[-8:-6]), int(latestFile[-6:-4]))	
 	print('here latest', latestDate.day, latestDate.month, latestDate.year)
-	return datetime(2025,10,26) # todo temp
+	return datetime(2025,10,27) # todo temp
 	return latestDate
 	
 def floatToString(n):
@@ -594,7 +594,7 @@ def downloadFromDropbox(filenames):
 			f.write(res.content)
 		print("[DOWNLOADED] {}".format(dropbox_path))
 	
-antarctic = True # todo temp
+antarctic = True# todo temp
 if auto:
 	plotdays = [10,30]
 	latestDate = getLatestDateInFolder()
