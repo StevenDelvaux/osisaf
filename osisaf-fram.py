@@ -96,7 +96,6 @@ def getLatestDateInFolder():
 	print('latest file',  latestFile)
 	latestDate = datetime(int(latestFile[-12:-8]), int(latestFile[-8:-6]), int(latestFile[-6:-4]))	
 	print('here latest', latestDate.day, latestDate.month, latestDate.year)
-	return datetime(2025,10,27) # todo temp
 	return latestDate
 	
 def floatToString(n):
