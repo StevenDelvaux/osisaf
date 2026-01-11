@@ -351,31 +351,31 @@ def plotFramGraph(inputFileName, outputFileName, title, ymax):
 	with open(inputFileName, 'r') as f:
 		lines = f.readlines()
 	memoryData = []
-	memoryData = plotCumSum(ax, lines, dates, -11, '2014/15', (0.0,0.69,0.94), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -10, '2015/16', (0,0.69,0.31), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -9, '2016/17', (0.57,0.82,0.31), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -8, '2017/18', (1.0,0.75,0), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -7, '2018/19', (0.9,0.4,0.05), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -6, '2019/20', (1.0,0.5,0.5), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -5, '2020/21', (0.58,0.54,0.33), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -4, '2021/22', (0.4,0,0.2), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -3, '2022/23', (0.0,0.69,0.94), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -2, '2023/24', (0.3,0.44,0.4), memoryData)
-	memoryData = plotCumSum(ax, lines, dates, -1, '2024/25', (0,0.44,0.75), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -12, '2014/15', (0.0,0.69,0.94), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -11, '2015/16', (0,0.69,0.31), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -10, '2016/17', (0.57,0.82,0.31), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -9, '2017/18', (1.0,0.75,0), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -8, '2018/19', (0.9,0.4,0.05), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -7, '2019/20', (1.0,0.5,0.5), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -6, '2020/21', (0.58,0.54,0.33), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -5, '2021/22', (0.4,0,0.2), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -4, '2022/23', (0.0,0.69,0.94), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -3, '2023/24', (0.3,0.44,0.4), memoryData)
+	memoryData = plotCumSum(ax, lines, dates, -2, '2024/25', (0,0.44,0.75), memoryData)
 	
-	numberOfDays = len(memoryData)
-	print(numberOfDays)
-	cum25 = np.cumsum(np.array(memoryData, dtype='float32'))/1000000.0
-	padded25 = np.pad(cum25, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))	
-	ax.plot(dates, padded25, label="2025/26", color=(1.0,0,0), linewidth=3);
-	
-	#line = lines[-1].split(",")
-	#line23 = np.append(memoryData, (np.array([i.lstrip() for i in np.array(line[1:])])))
-	#numberOfDays = len(line23)
+	#numberOfDays = len(memoryData)
 	#print(numberOfDays)
-	#cum23 = np.cumsum(line23.astype(float))/1000000.0
-	#padded23 = np.pad(cum23, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))
-	#ax.plot(dates, padded23, label="2024/25", color=(1.0,0,0), linewidth=3);
+	#cum25 = np.cumsum(np.array(memoryData, dtype='float32'))/1000000.0
+	#padded25 = np.pad(cum25, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))	
+	#ax.plot(dates, padded25, label="2025/26", color=(1.0,0,0), linewidth=3);
+	
+	line = lines[-1].split(",")
+	line25 = np.append(memoryData, (np.array([i.lstrip() for i in np.array(line[1:])])))
+	numberOfDays = len(line25)
+	print(numberOfDays)
+	cum25 = np.cumsum(line25.astype(float))/1000000.0
+	padded25 = np.pad(cum25, (0, 365 - numberOfDays), 'constant', constant_values=(np.nan,))
+	ax.plot(dates, padded25, label="2025/26", color=(1.0,0,0), linewidth=3);
 	
 	
 	ax.set_ylabel("10$^6$ km$^2$")
