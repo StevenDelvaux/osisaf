@@ -593,7 +593,7 @@ def downloadFromDropbox(filenames):
 			f.write(res.content)
 		print("[DOWNLOADED] {}".format(dropbox_path))
 	
-antarctic = True# todo temp
+antarctic = False# todo temp
 if auto:
 	plotdays = [10,30]
 	latestDate = getLatestDateInFolder()
