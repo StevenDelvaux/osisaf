@@ -593,7 +593,7 @@ def downloadFromDropbox(filenames):
 			f.write(res.content)
 		print("[DOWNLOADED] {}".format(dropbox_path))
 	
-antarctic = False# todo temp
+antarctic = True# todo temp
 if auto:
 	plotdays = [10,30]
 	latestDate = getLatestDateInFolder()
@@ -609,9 +609,12 @@ if auto:
 		os.remove(filenameImage)
 		
 		if antarctic:
-			filenameImageAntarctic = downloadImage(yesterday, False)
-			prepareImageAntarctic(filenameImageAntarctic, 'osisaf-antarctic-average.png')
-			os.remove(filenameImageAntarctic)
+			try:
+				filenameImageAntarctic = downloadImage(yesterday, False)
+				prepareImageAntarctic(filenameImageAntarctic, 'osisaf-antarctic-average.png')
+				os.remove(filenameImageAntarctic)
+			except:
+				print('Failed prepare antarctic image')
 		
 	if framExport:
 		framFilename = 'osisaf-fram-daily.csv'
@@ -646,11 +649,14 @@ if auto:
 		os.remove(filename)
 		
 		if antarctic:
-			filenameAntarctic = 'osisaf-antarctic-average-last-' + str(delta) + '-days.png'
-			sumAntarctic(yesterday - timedelta(days = delta - 2), yesterday, filenameAntarctic)
-			if putOnDropbox:
-				uploadToDropbox([filenameAntarctic])
-			os.remove(filenameAntarctic)
+			try:
+				filenameAntarctic = 'osisaf-antarctic-average-last-' + str(delta) + '-days.png'
+				sumAntarctic(yesterday - timedelta(days = delta - 2), yesterday, filenameAntarctic)
+				if putOnDropbox:
+					uploadToDropbox([filenameAntarctic])
+				os.remove(filenameAntarctic)
+			except:
+				print('failed ' + filenameAntarctic)
 
 	if framExport:
 		updateFramGraphs('fjl')
